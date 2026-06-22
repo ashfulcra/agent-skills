@@ -1,8 +1,9 @@
 # agent-skills
 
-These skills give your AI agent the ability to work with Fulcra — backing up memory, tracking personal data, coordinating with other agents, and more.
+These skills will help you and your AI agent get started working and building collborative loops with Fulcra — backing up memory, tracking personal data, coordinating with other agents, and more. 
 
-Install them once, and your agent will know what to do when you ask.
+Install them once, and your agent will know what to do when you ask, and know what has changed since the last time it woke up. Connect multiple agents to your Fulcra data to make them not only
+aware of you, but also aware of each other and your shared work. 
 
 ## Installation
 
