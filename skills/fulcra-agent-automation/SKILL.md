@@ -81,7 +81,7 @@ an un-regenerated hook keeps emitting the doctrine it was rendered under.
 ./scripts/claude-code/install-claude-code.sh --uninstall <team> <agent>
 ```
 Writes three scripts to `~/.claude/fulcra-coord2-hooks/` and merges their command paths into
-`~/.claude/settings.json`: **SessionStart** → bounded `continuity resume` + inbox brief injected as
+`~/.claude/settings.json`: **SessionStart** → bounded `continuity resume` + `briefing` injected as
 context; **PreCompact** and **SessionEnd** → backgrounded `continuity park`. It touches only its own
 command paths, so any legacy `fulcra-coord-hooks` keep firing alongside. Cowork uses the same core
 and the same settings.json, so the same installer covers it.
@@ -93,7 +93,7 @@ python3 scripts/codex/install_codex_watch.py <team> <agent> [--codex-dir DIR] [-
 Merges SessionStart (matcher `startup|resume|clear|compact`) + PreCompact entries into
 `~/.codex/hooks.json` — same entry shape as Claude Code — and seeds a `fulcra-coord2`-first app-thread
 automation under `~/.codex/automations/coord2-watch-<agent>/` whose prompt embeds contract rules 1–3 and
-ticks the inbox. The consent-gated `wake.json` host-wake layer is **deliberately not shipped** (security
+runs the briefing-led tick. The consent-gated `wake.json` host-wake layer is **deliberately not shipped** (security
 ruling: it spawns headless `codex exec` with approvals/sandbox bypassed; the listener (§2) already covers
 wake). Deployment precondition: on the first real host, verify the SessionStart hook actually fires
 before relying on hook-based automation seeding — pass `--thread-id` for the deterministic path if you
