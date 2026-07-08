@@ -71,7 +71,7 @@ _EVENTS: "dict[str, tuple[str, str | None]]" = {
 
 COORD2_WATCH_PROMPT = """\
 [coord2 watch — managed by fulcra-agent-automation/scripts/codex; do not hand-edit]
-You are {agent} on coord2 team {team}. Each tick, in order:
+You are {agent} on team {team}. Each tick, in order:
 1. coord-engine continuity resume {team} {agent}   # resume before new work
 2. coord-engine inbox {team} --agent {agent}       # and your role inboxes, e.g. codex-reviewer
 3. coord-engine needs-me {team} --agent {agent}
@@ -108,7 +108,7 @@ INBOX="$(coord-engine inbox "$TEAM" --agent "$AGENT" 2>/dev/null | head -8)"
 python3 - "$BRIEF" "$INBOX" <<'PYEOF'
 import json, sys
 brief, inbox = sys.argv[1], sys.argv[2]
-ctx = "coord2 resume brief:\\n" + brief + "\\n\\ncoord2 inbox:\\n" + inbox
+ctx = "team resume brief:\\n" + brief + "\\n\\nteam inbox:\\n" + inbox
 print(json.dumps({"hookSpecificOutput": {
     "hookEventName": "SessionStart", "additionalContext": ctx[:4000]}}))
 PYEOF
@@ -256,7 +256,7 @@ def install_automation(team: str, agent: str, codex_dir: Path, *,
         "version = 1\n"
         f"id = {_toml_str(aid)}\n"
         'kind = "heartbeat"\n'
-        f"name = {_toml_str('coord2 watch (' + agent + ')')}\n"
+        f"name = {_toml_str('Fulcra team watch (' + agent + ')')}\n"
         f"prompt = {_toml_str(prompt)}\n"
         'status = "ACTIVE"\n'
         f'rrule = "FREQ=MINUTELY;INTERVAL={WATCH_INTERVAL_MIN}"\n'

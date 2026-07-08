@@ -79,7 +79,7 @@ _END = "<!-- fulcra-coord2:end -->"
 # Block bodies (brief-binding). {team} / {agent} are the only format fields;
 # `<task>`, `"..."`, and HEARTBEAT_OK are literal prose.
 HEARTBEAT_BLOCK = """\
-On each heartbeat, as {agent} on coord2 team {team}:
+On each heartbeat, as {agent} on team {team}:
 1. coord-engine continuity resume {team} {agent}
 2. coord-engine inbox {team} --agent {agent} ; coord-engine needs-me {team} --agent {agent}
 3. Act on anything new; after completing a work item:
@@ -88,7 +88,7 @@ On each heartbeat, as {agent} on coord2 team {team}:
 """
 
 BOOT_BLOCK = """\
-On boot, as {agent} on coord2 team {team}: run
+On boot, as {agent} on team {team}: run
 coord-engine continuity resume {team} {agent} and read your inbox before new work.
 """
 

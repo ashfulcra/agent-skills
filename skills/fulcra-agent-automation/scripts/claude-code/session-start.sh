@@ -14,7 +14,7 @@ INBOX="$(coord-engine inbox "$TEAM" --agent "$AGENT" 2>/dev/null | head -8)"
 python3 - "$BRIEF" "$INBOX" <<'EOF'
 import json, sys
 brief, inbox = sys.argv[1], sys.argv[2]
-ctx = "coord2 resume brief:\n" + brief + "\n\ncoord2 inbox:\n" + inbox
+ctx = "team resume brief:\n" + brief + "\n\nteam inbox:\n" + inbox
 print(json.dumps({"hookSpecificOutput": {
     "hookEventName": "SessionStart", "additionalContext": ctx[:4000]}}))
 EOF

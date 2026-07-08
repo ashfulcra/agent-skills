@@ -85,6 +85,6 @@ for event, (script, matcher) in mapping.items():
 with open(settings_path, "w") as f:
     json.dump(d, f, indent=2)
     f.write("\n")
-print(("removed" if uninstall else "installed") + " coord2 hooks:",
+print(("removed" if uninstall else "installed") + " team lifecycle hooks:",
       ", ".join(mapping))
 EOF
