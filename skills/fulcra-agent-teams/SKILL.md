@@ -86,6 +86,7 @@ For larger, ongoing objectives spanning multiple messages or sessions, track sta
 - These files track the overall purpose, current state, and result of the task. They should be updated periodically as work progresses.
 - **Task Updates:** When updating a task file, agents MUST append an entry documenting what was done, explicitly including the name of the agent doing the work, the date/time it was done, and relative links to any task-related files (such as newly generated artifacts or session summaries).
 - Task files MUST be included in the `team/<team-name>/task/index.md` file, which should list all active and completed tasks in the directory.
+- **Optional self-healing index:** If the `fulcradynamics/agent-skills/fulcra-agent-reconcile` skill is installed, `task/index.md` becomes engine-owned — do not hand-edit it. Instead, run `coord-engine reconcile <team-name>` to regenerate the index and task views from the task docs. Keep editing the individual task *content* files as above; only the index is machine-generated.
 
 **Team Knowledge Base:**
 The `team/<team-name>/knowledge/` subdirectory allows teams to collaboratively build a shared repository of information. Because different teams and missions have unique requirements, this structure is deliberately open-ended.

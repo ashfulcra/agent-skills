@@ -1,0 +1,43 @@
+---
+name: fulcra-agent-reconcile-cli
+description: "Exact commands to run the coord-engine reconcile tool over a fulcra-agent-teams namespace."
+---
+
+# Fulcra Agent Reconcile — CLI reference
+
+The logic lives in the shared **`coord-engine`** tool. It shells out to `fulcra-api file`
+for all storage I/O, so `fulcra-api` must be authenticated (`fulcra-api auth login`).
+
+## Install / run
+
+Install once (see the skill's Installation section), then invoke `coord-engine` directly:
+```bash
+uv tool install "git+https://github.com/ashfulcra/fulcra-tools@coord-engine-v1.3.0#subdirectory=packages/coord-engine"
+coord-engine reconcile <team>
+```
+
+## Commands
+```bash
+# Scan team/<team>/task/*.md -> heal task/index.md + task/log.md -> write _coord/summaries.json
+coord-engine reconcile <team>
+
+# Read views (one aggregate download each; run reconcile first):
+coord-engine status   <team> [--json]          # counts by status
+coord-engine board    <team> [--json]          # open work grouped active/waiting/blocked/proposed
+coord-engine needs-me <team> --agent <id> [--json]  # assigned-to / blocking <id>, gated on not_before; PLUS pending-required reviews for <id> or any role it holds (rows with type: review-pending)
+coord-engine search   <team> <query> [--json]  # substring over id/title/description/tags
+```
+
+## Environment
+- `FULCRA_CLI_COMMAND` — override the storage CLI (default `fulcra-api`). E.g. `uv tool run fulcra-api`.
+- `FULCRA_COORD_AGENT` — identity recorded as `reconcile_host` in the aggregate (default `coord-reconcile:<hostname>`). Set it to the ROLE you act as, not a folder/cwd string — see the `fulcra-agent-presence` skill's "Pick your identity by ROLE" (proposed in PR #129). EXCEPTION: scheduled reconcile heartbeats feed per-host health shards, so when several hosts run the heartbeat use `role@host` variants — collapsing them onto one id would mask a dead host while any other host beats.
+- `COORD_LOG_LEVEL` — `debug|info|warn|error` (structured JSON logs to stderr; default `info`).
+
+## Behavior notes
+- **Incremental:** a task file is re-read only when its `fulcra-api file list` timestamp differs from the
+  last aggregate. That timestamp is minute-granular, so two edits within one minute of the prior pass are
+  re-scanned on the next run (conservative, never stale).
+- **Degraded:** if `file list` fails, the pass aborts and writes nothing (prior index/log/aggregate stay).
+- **Concurrency:** run reconcile from one scheduled host, or accept convergence — the output is
+  deterministic from the listing, so concurrent passes converge (Fulcra File Store is last-writer-wins
+  and versions every write).
