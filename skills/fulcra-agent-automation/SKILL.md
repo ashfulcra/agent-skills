@@ -64,6 +64,17 @@ skill (proposed in PR #129); the adapters below automate it. Each keys everythin
 a legacy entry. All installers are idempotent (reinstall replaces, never duplicates) and ship an
 `--uninstall` inverse.
 
+**Tick doctrine (shared by every adapter).** Every adapter keys off the same canonical, briefing-led
+tick — though claude-code's hook renders only steps 1–2 (`continuity resume` + `briefing`) as session
+context, leaving the verdict-before-ack duty steps to the review skill's reviewer procedure:
+`continuity resume` → `briefing` (THE entry fold — identity, role inboxes, needs-me incl. pending
+reviews) → for each review request, **slug-exact verdict-before-ack** (write the verdict file, verify
+`review status` clears you from `pending_required`, only then ack — never ack bare or against a different
+slug) → handle other work → `continuity snapshot` → `usage log` (ATC, when accounts are declared) →
+`continuity park` before session end. **These hooks/prompts/blocks are rendered artifacts, not live
+references:** after upgrading the skill, **RE-RUN YOUR ADAPTER INSTALLER** to regenerate them —
+an un-regenerated hook keeps emitting the doctrine it was rendered under.
+
 **Claude Code / Cowork** — settings.json hooks.
 ```bash
 ./scripts/claude-code/install-claude-code.sh <team> <agent>
