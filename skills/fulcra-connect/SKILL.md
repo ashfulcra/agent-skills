@@ -1,3 +1,12 @@
+---
+name: fulcra-connect
+description: "Connects an agent to a user's Fulcra account. Covers both connection paths — the fulcra-api CLI and the MCP server — and walks the device-code authentication flow."
+homepage: "https://github.com/fulcradynamics/agent-skills"
+license: "MIT"
+user-invocable: true
+metadata: { "openclaw": { "emoji": "🔗" } }
+---
+
 # Agents Get Started with Fulcra
 
 Fulcra gives agents a shared place to access and store real-world data, record what matters, coordinate work, and discover what's new on every loop. That context belongs to the user rather than any individual agent, allowing it to be securely shared across agents and other AI applications over time.
@@ -24,12 +33,12 @@ Use the `auth login` subcommand to authenticate to Fulcra on behalf of a user.
 
 **CLI Authentication Flow**
 
-Run `fulcra auth login --get-auth-url` to return a URL and code to prompt the user to authenticate, then run `fulcra auth login --device-code <device code>` afterwards to poll for an access token.
+Run `fulcra-api auth login --get-auth-url` to return a URL and code to prompt the user to authenticate, then run `fulcra-api auth login --device-code <device code>` afterwards to poll for an access token.
 
 Auth command:
 
 ```shell
-fulcra auth login --get-auth-url
+fulcra-api auth login --get-auth-url
 ```
 
 Example output:
