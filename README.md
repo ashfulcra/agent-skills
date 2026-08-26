@@ -35,6 +35,12 @@ Or clone the repo and copy the skill folders you want into your agent's skills d
 | 🤝&nbsp;&nbsp;[fulcra-workspaces](#-fulcra-workspaces) | Let multiple agents coordinate work through shared team spaces |
 | ⚙️&nbsp;&nbsp;[fulcra-prefs](#-fulcra-prefs) | Remember your preferences across agents and sessions |
 | 📥&nbsp;&nbsp;[Ingest](#-ingest) | Import third-party data exports into Fulcra Annotations |
+| 🔌&nbsp;&nbsp;[fulcra-connect](#-fulcra-connect) | Connect any agent to Fulcra: CLI, MCP, and login |
+| 🧱&nbsp;&nbsp;[fulcra-primitives](#-fulcra-primitives) | Learn the core primitives: data types, records, versioned files |
+| 🔭&nbsp;&nbsp;[fulcra-situational-awareness](#-fulcra-situational-awareness) | Open every session knowing what changed |
+| 💾&nbsp;&nbsp;[fulcra-agent-backup](#-fulcra-agent-backup) | Snapshot, roll back, and clone an agent from versioned storage |
+| 🧮&nbsp;&nbsp;[fulcra-analytics](#-fulcra-analytics) | Privacy-respecting descriptive analysis of your Fulcra data |
+| 🎛️&nbsp;&nbsp;[fulcra-control-panel](#-fulcra-control-panel) | Run a local-only control panel for your Fulcra environment |
 
 ---
 
@@ -175,6 +181,91 @@ Use this skill to process third-party data exports that have been uploaded to th
 - `ingest/_meta/source_map.md` tracks source lineage, schema IDs, deterministic ID fields, and archived locations
 
 **Contains:** `SKILL.md`, `references/` (CLI commands, record ingestion, source mapping), `scripts/` (deterministic ID generation)
+
+---
+
+## 🔌 fulcra-connect
+
+`skills/fulcra-connect/`
+
+Use this skill for the connection step on its own. It covers both entry points — the CLI for agents with a shell, and the hosted MCP server for chat agents — plus the device authorization flow that puts an agent on your account.
+
+- CLI: `uvx fulcra-api` runs the client without installing it; `uvx fulcra-api auth login` starts authorization
+- MCP: point any MCP-capable agent at `https://mcp.fulcradynamics.com/mcp`
+- Credentials persist to disk and tokens refresh on their own, so login is a one-time step
+- When an agent's shell has no outbound network access, it routes you to the MCP connector instead of debugging the network
+
+**Contains:** `SKILL.md`
+
+---
+
+## 🧱 fulcra-primitives
+
+`skills/fulcra-primitives/`
+
+Use this skill when an agent needs the mechanics instead of a guided flow. Three primitives cover most of what Fulcra stores: events for things that happened, metrics for values measured over time, and files that version themselves on every upload to the same path.
+
+- Installs and runs the CLI, with device authorization done in two steps so commands don't hang on a browser
+- Creates custom data types from the base annotation shapes it walks through (moment, boolean, numeric, scale)
+- Uploads, lists, inspects, and downloads files, including earlier versions of a path
+- Covers the Open Knowledge Format conventions the file store expects
+
+**Contains:** `SKILL.md`
+
+---
+
+## 🔭 fulcra-situational-awareness
+
+`skills/fulcra-situational-awareness/`
+
+Use this skill to give your agent the habit of checking what changed before it starts work, so a session opens from current state instead of a recap.
+
+- Asks your permission first, then records the habit in its own memory
+- Runs the CLI's `data-updates` for the window since its last check — recent ingestion and file changes in one call
+- Notices which team and memory files moved without downloading them, and fetches only what the task needs
+- Checks its team inbox for messages from other agents or from you
+
+**Contains:** `SKILL.md`, `references/` (CLI commands for the awareness scan)
+
+---
+
+## 💾 fulcra-agent-backup
+
+`skills/fulcra-agent-backup/`
+
+Use this skill to snapshot an agent's identity and memory into your account so you can rewind it. Because uploads to one path are versioned, repeated backups build a timeline of the agent's states.
+
+- Bundles `SOUL.md`, `IDENTITY.md`, `MEMORY.md`, and `memory/` into `memory.tar.gz`, with restore instructions inside the archive
+- Takes a fresh backup before any rollback, so you can undo the rollback too
+- Clones an agent: one backs up and reports its path, the other restores from it
+- Requires explicit confirmation before overwriting memory or identity
+
+**Contains:** `SKILL.md`, `references/` (CLI commands for archiving, upload, and restore)
+
+---
+
+## 🧮 fulcra-analytics
+
+`skills/fulcra-analytics/`
+
+Use this skill for descriptive analysis of your own data, built so raw records stay on your machine. It fetches records or metric time series through the CLI, normalizes them into DataFrames, and produces summaries you can read or publish.
+
+- Pulls from `fulcra-api get-records` and `fulcra-api metric-time-series`, or reads local JSON/JSONL/CSV exports
+- Computes missingness, numeric and categorical summaries, boolean ratios, datetime ranges, grouped summaries
+- Emits auditable JSON or an OKF-ready report (question, data, methods, findings, caveats, next steps)
+- Stops at descriptive statistics on purpose; modeling and causal work are out of scope
+
+**Contains:** `SKILL.md`, `README.md`, `pyproject.toml`, `src/fulcra_analytics/` (Python package), `scripts/`, `docs/`, `tests/`
+
+---
+
+## 🎛️ fulcra-control-panel
+
+`skills/fulcra-control-panel/`
+
+Use this skill to set up a secure, local-only administration panel for your Fulcra environment — an interactive Chat Envoy for talking to your agent directly, and a File Store Explorer for browsing your data backend.
+
+**Contains:** `SKILL.md`, `scripts/`, `template-control-panel/`
 
 ---
 
