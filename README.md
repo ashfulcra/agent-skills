@@ -31,7 +31,7 @@ Or clone the repo and copy the skill folders you want into your agent's skills d
 | 🌱&nbsp;&nbsp;[fulcra-get-started](#-fulcra-get-started) | Connect to Fulcra for the first time |
 | 📈&nbsp;&nbsp;[fulcra-tracking](#-fulcra-tracking) | Track custom data and visualize it in a dashboard |
 | 📊&nbsp;&nbsp;[fulcra-dashboard](#-fulcra-dashboard) | Build a live, interactive dashboard from your Fulcra data |
-| 🧠&nbsp;&nbsp;[fulcra-memory](#-fulcra-memory) | Back up, restore, and clone your agent's memory |
+| 🧠&nbsp;&nbsp;[fulcra-memory](#-fulcra-memory) | Sync progress and structured agent memory to Fulcra |
 | 🤝&nbsp;&nbsp;[fulcra-workspaces](#-fulcra-workspaces) | Let multiple agents coordinate work through shared team spaces |
 | ⚙️&nbsp;&nbsp;[fulcra-prefs](#-fulcra-prefs) | Remember your preferences across agents and sessions |
 | 📥&nbsp;&nbsp;[Ingest](#-ingest) | Import third-party data exports into Fulcra Annotations |
@@ -41,6 +41,10 @@ Or clone the repo and copy the skill folders you want into your agent's skills d
 | 💾&nbsp;&nbsp;[fulcra-agent-backup](#-fulcra-agent-backup) | Snapshot, roll back, and clone an agent from versioned storage |
 | 🧮&nbsp;&nbsp;[fulcra-analytics](#-fulcra-analytics) | Privacy-respecting descriptive analysis of your Fulcra data |
 | 🎛️&nbsp;&nbsp;[fulcra-control-panel](#-fulcra-control-panel) | Run a local-only control panel for your Fulcra environment |
+
+### Renamed skills
+
+Following an older link? `fulcra-agent-teams` is now `fulcra-workspaces`, and `fulcra-onboarding` is now `fulcra-get-started`. The old skill folders remain as deprecation pointers to their replacements.
 
 ---
 
@@ -56,15 +60,17 @@ Or clone the repo and copy the skill folders you want into your agent's skills d
    / \ / \
 ```
 
-**Start here.** This skill walks you through connecting to Fulcra for the first time — installing the CLI, logging in, and choosing what to set up next.
+**Start here.** This skill connects you to Fulcra, helps you choose a useful project or problem to pursue, and then guides your agent toward a tangible first result with continuing work and visibility set up around it.
 
-Once you're connected, your agent will offer five directions to go:
+The five starting directions are:
 
-1. Set up custom data tracking and a personal dashboard
-2. Back up your agent's memory to Fulcra
-3. Connect multiple agents so they can coordinate work
-4. Download the Fulcra Context iOS app
-5. Explore your data on the Context Web portal
+1. Make something new and useful
+2. Solve a specific problem
+3. Improve a setup you already have
+4. Share information with other users
+5. Choose a concrete skill or use case from the community-skills repository
+
+After connection, the skill aims to deliver a useful view, establish a workspace and tracking for continued work, and make completed, current, and future work visible.
 
 **Contains:** `SKILL.md`, `references/` (CLI docs). Authentication is handled by the `fulcra-connect` skill.
 
@@ -80,7 +86,7 @@ Also includes the Universal Agent Visibility Package: a set of schemas so you ca
 
 Once you've seen the static dashboard preview, this skill hands off to `fulcra-dashboard` to build a persistent version.
 
-**Stack:** Alpine.js, D3.js, Vanilla CSS. No build step.
+**Preview:** A quick preview is a single HTML/CSS/JS file with no Tailwind CDN. Richer dashboards hand off to `fulcra-dashboard`.
 
 **Contains:** `SKILL.md`, `references/` (CLI docs, discovery flow, recording steps, demonstration flow)
 
@@ -90,16 +96,16 @@ Once you've seen the static dashboard preview, this skill hands off to `fulcra-d
 
 `skills/fulcra-dashboard/`
 
-Use this skill to turn your Fulcra data into a live, interactive local web app. Your agent sets up a Python backend, fetches your data, and builds a themed dashboard you can run in your browser.
+Use this skill to turn your Fulcra data into a live, interactive local web app. Your agent scaffolds a build-less Alpine.js and Vanilla CSS dashboard, fetches the data you approve, and serves it locally with Python.
 
 From there you can:
-- Chat with your agent directly from the dashboard
-- Browse your Fulcra file store
-- Publish a sanitized public version to Surge, GitHub Pages, or Vercel
+- Add interactive browser visualizations with D3.js, Plotly, or other lightweight libraries
+- Generate more specialized visualizations with the Python backend
+- Publish only the isolated `public/` directory to Surge, GitHub Pages, or Vercel after reviewing exactly what it contains
 
-**Architecture:** Single-file `index.html` or a Static Triad (`index.html`, `app.js`, `styles.css`). No framework, no build step.
+**Architecture:** Single-file `index.html` or a Static Triad (`index.html`, `app.js`, `styles.css`), using Alpine.js without a build step.
 
-**Contains:** `SKILL.md`, `scripts/` (setup script for scaffolding the dashboard)
+**Contains:** `SKILL.md`, `scripts/` (setup script), `template-dashboard/` (local server and dashboard template)
 
 ---
 
@@ -107,17 +113,16 @@ From there you can:
 
 `skills/fulcra-memory/`
 
-Use this skill to back up your agent's memory — its notes, identity, daily logs — to your Fulcra file store. Because each upload is versioned, you can roll back to an earlier state if something goes wrong.
+Use this skill to keep an agent's progress and structured memory readable, transferable, and synchronized through Fulcra's versioned file store. It organizes the agent namespace under `agent/<agent-name>/` using Open Knowledge Format conventions.
 
-You can also use this skill to clone an agent: back up one agent's memory, then restore it into a new one.
+- Sync a concise `progress.md` so users and other agents can see what was done and what comes next
+- Maintain OKF `index.md`, `log.md`, `role.md`, and structured session, task, knowledge, and inbox areas
+- Use `data-updates` to discover recent memory changes without exhaustively scanning the namespace
+- Keep progress reports free of credentials, sensitive personal data, and private internal reasoning
 
-- **Back up** your agent's current state on demand or on a schedule
-- **Roll back** to a previous version (the skill always saves a fresh backup before restoring)
-- **Clone** memory from one agent to another
+For full snapshots, rollback, and cloning, use `fulcra-agent-backup` instead.
 
-Storage follows the [Open Knowledge Format (OKF)](https://github.com/GoogleCloudPlatform/knowledge-catalog/blob/main/okf/SPEC.md).
-
-**Contains:** `SKILL.md`, `references/` (CLI commands for compression, upload, and restore)
+**Contains:** `SKILL.md`, `references/` (CLI commands for progress and memory syncing)
 
 ---
 
@@ -149,7 +154,7 @@ Agents can also check their inbox automatically in the background (you'll be ask
 
 Use this skill so your agent remembers how you like things — across sessions and across different AI tools. When you say "from now on, always do X" or correct something the agent got wrong, this skill captures that preference and makes it available next time.
 
-Works with CLI-capable agents, HTTP-only agents, and MCP agents (read-only).
+Preferences are stored as a custom `MomentAnnotation`. The skill loads the newest signal for each preference and captures only preferences the user explicitly states, corrects, or confirms.
 
 > Alpha: the schema may change in early versions.
 
@@ -176,7 +181,7 @@ Works with CLI-capable agents, HTTP-only agents, and MCP agents (read-only).
 ```
 Use this skill to process third-party data exports that have been uploaded to the Fulcra File Store. It profiles raw ZIP, JSON, and CSV files in `ingest/`, maps them to the right Fulcra Annotation schemas, and records the resulting data points without creating duplicate schemas or records.
 
-- Worker agents profile individual exports, resolve or create the matching Annotation schema, and ingest records
+- The pipeline profiles each export, resolves or creates an idempotent Annotation schema, generates deterministic record IDs, and ingests the records
 - Processed files are archived under `ingest/_meta/archive/artifact/`
 - `ingest/_meta/source_map.md` tracks source lineage, schema IDs, deterministic ID fields, and archived locations
 
