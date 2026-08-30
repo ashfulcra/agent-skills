@@ -1,6 +1,6 @@
 # fulcra-agent-backup
 
-Gives an agent a memory it can lose without losing everything.
+Lets an agent lose its memory without losing everything.
 
 An agent's working state — its notes, its identity, its running log of what it has learned — normally lives wherever it happens to be running. If that machine goes away, or a session ends badly, so does the memory.
 
