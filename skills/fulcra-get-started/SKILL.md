@@ -47,7 +47,7 @@ To deliver something useful that works and has iteration and visibility, you sho
 
 2. **Connection:**
    - Read and follow the `fulcra-connect` skill to connect the user to Fulcra. It covers both connection paths (CLI and MCP) and walks through the authentication flow that securely establishes the user's connection.
-   - Once connected, celebrate the milestone! You are now ready to start making.
+   - Once connected, confirm that setup succeeded and continue with the user's task.
 
 ### Phase 2: Direction & Tangible Delivery
 
