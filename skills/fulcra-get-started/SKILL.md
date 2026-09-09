@@ -21,6 +21,8 @@ To achieve these goals, Fulcra gives agents a shared place to access and store r
 - **Optimize for Time-to-Wow:** Favor opinionated defaults over exhaustive discussion. The objective is to get the user to their first genuinely useful workflow as quickly as possible.
 - **Maintain Momentum:** If the user becomes stuck or overwhelmed, choose or recommend a sensible default and keep the getting started process moving forward.
 
+- After writing a file, read it back from the same Fulcra account and check that its contents match the user's requested update before reporting it saved.
+
 ## Workflow: Getting Started
 
 Getting started with Fulcra follows a dynamic path. First, you get the user connected. Second, you help them imagine and choose a direction based on real problems they want to solve. Third, you deliver a tangible view and establish a persistent structure for ongoing work before transitioning to the next steps.
