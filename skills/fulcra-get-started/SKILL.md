@@ -23,6 +23,8 @@ To achieve these goals, Fulcra gives agents a shared place to access and store r
 
 - After writing a file, read it back from the same Fulcra account and check that its contents match the user's requested update before reporting it saved.
 
+- When storing or summarizing context, preserve the user's stated facts and uncertainty; do not infer stronger status claims or present an inference as a verified fact.
+
 ## Workflow: Getting Started
 
 Getting started with Fulcra follows a dynamic path. First, you get the user connected. Second, you help them imagine and choose a direction based on real problems they want to solve. Third, you deliver a tangible view and establish a persistent structure for ongoing work before transitioning to the next steps.
